@@ -76,7 +76,7 @@ proc blast3ntover1nt {hand} {
 }
 
 proc write_deal {} {
-  set tr [deal::tricks east notrump]
+#  set tr [deal::tricks east notrump]
   set trS [dds -leader south -trick TS east notrump]
   set trH [dds -leader south -trick QH east notrump]
   set h [hcp east]
