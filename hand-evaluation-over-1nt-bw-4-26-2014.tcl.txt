@@ -7,11 +7,20 @@ shapecond nt_shape {$s <= 5 && $s >= 2 && $h <= 5 && $h >= 2 && $d <= 6 && $d >=
 array set count {
  hands 0
  tricks 0
+ nineormore 0
+ eight 0
+ seven 0
+ sixorless 0
+ accept 0
+ acceptandmake 0
+ decline 0
+ declineandgame 0
+ declineanddime 0
 }
 
-sdev blast3nt
-sdev invite2nt
-sdev pass1nt
+correlation blast3nt
+correlation invite2nt
+correlation pass1nt
 sdev trickcount
 
 patternclass longest { return $l1 }
@@ -126,7 +135,7 @@ proc imp_score {a b} {
   puts "A is $a ; B is $b ; diff is $diff ; Pos is $pos"
   if {$diff <= 10} {return 0}
   if {$diff <= 40} {return [expr $pos * 1]}
-  if {$diff <= 80} {return [expr $pos * 2]}
+  if {$diff <= 80} {return [expr s$pos * 2]}
   if {$diff <= 120} {return [expr $pos * 3]}
   if {$diff <= 160} {return [expr $pos * 4]}
   if {$diff <= 210} {return [expr $pos * 5]}
@@ -168,6 +177,17 @@ proc write_deal {} {
 
   set count(tricks) [expr $count(tricks) + $tr]
 
+  if {$tr >= 9 } { 
+    incr count(nineormore) 
+  } elseif {$tr == 8} {
+    incr count(eight) 
+  } elseif {$tr == 7} {
+    incr count(seven) 
+  } else {
+    incr count(sixorless) 
+  }
+ 
+
   set rawscore3nt [score {3 notrump} vul $tr]
   set rawscore1nt [score {1 notrump} vul $tr]
   set 3ntc1nt [imp_score $rawscore3nt $rawscore1nt]
@@ -178,14 +198,23 @@ proc write_deal {} {
   set ic1nt 0
   set rawscore2nt [score {2 notrump} vul $tr]
   if { $acI } {
+    incr count(accept)
     set 1ntci $1ntc3nt
     set ic1nt $3ntc1nt
+    if {$tr >= 9} { incr count(acceptandmake) }
   } else {
+    incr count(decline)
+    if {$tr >= 9} { incr count(declineandgame) }
+    if {$tr == 8} { incr count(declineanddime) }
     set 1ntci [imp_score $rawscore1nt $rawscore2nt]
     set ic1nt [imp_score $rawscore2nt $rawscore1nt]
     set 3ntci [imp_score $rawscore3nt $rawscore2nt]
     set ic3nt [imp_score $rawscore2nt $rawscore3nt]
   }
+
+  blast3nt add $3ntc1nt $3ntci
+  invite2nt add $ic3nt $ic1nt
+  pass1nt add $1ntc3nt $1ntci
 
   formatter::write_deal
   puts "There are $tr tricks in NT"
@@ -197,8 +226,23 @@ proc write_deal {} {
 
 deal_finished {
   global count
-#  puts "The matchpoint score for the spade lead is ([expr double($count(spadeMP))/(2*$count(hands))*100]%) based on $count(spadeW) wins and $count(spadeT) ties and [expr {$count(hands) - $count(spadeW) - $count(spadeT)}] losses"
+  global blast3nt
+  global invite2nt
+  global pass1nt
+  global trickcount
 
+  puts "There were an average of [trickcount average] tricks available in nt"
+  puts "In general, blasting instead of passing wins you [blast3nt average x].  Blasting instead of invite wins you [blast3nt average y]"
+  puts "In general, inviting instead of blasting wins you [invite2nt average x].  Inviting instead of passing wins you [invite2nt average y]"
+  puts "In general, passing instead of blasting wins you [pass1nt average x]. Passing instead of inviting wins you [pass1nt average y]"
+  puts "There are 9 or more tricks $count(nineormore) times ([expr double($count(nineormore))/$count(hands)*100]%)"
+  puts "There are 8 tricks $count(eight) times ([expr double($count(eight))/$count(hands)*100]%)"
+  puts "There are 7 tricks $count(seven) times ([expr double($count(seven))/$count(hands)*100]%)"
+  puts "There are 6 or less tricks $count(sixorless) times ([expr double($count(sixorless))/$count(hands)*100]%)"
+  puts "We accept the invite $count(accept) times ([expr double($count(accept))/$count(hands)*100]%) and decline $count(decline) times ([expr double($count(decline))/$count(hands)*100]%)"
+  puts "When we accept we make it $count(acceptandmake) times ([expr double($count(acceptandmake))/$count(accept)*100]% of accepts)"
+  puts "When we decline we would have made game $count(declineandgame) times ([expr double($count(declineandgame))/$count(decline)*100]% of declines)"
+  puts "When we decline we would make 8 exactly $count(declineanddime) times ([expr double($count(declineanddime))/$count(decline)*100]% of declines)"
 }
 
 main {
