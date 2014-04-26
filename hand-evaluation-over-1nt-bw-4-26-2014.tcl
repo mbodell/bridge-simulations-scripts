@@ -138,7 +138,7 @@ proc imp_score {a b} {
   }
   if {$diff <= 10} {return 0}
   if {$diff <= 40} {return [expr $pos * 1]}
-  if {$diff <= 80} {return [expr s$pos * 2]}
+  if {$diff <= 80} {return [expr $pos * 2]}
   if {$diff <= 120} {return [expr $pos * 3]}
   if {$diff <= 160} {return [expr $pos * 4]}
   if {$diff <= 210} {return [expr $pos * 5]}
