@@ -1,0 +1,9 @@
+There were 1000000 hands dealt
+There were 188643 inclusive NT hands dealt (18.8643%)
+There were 151460 6 minor but no 5 major NT hands dealt (15.146%)
+There were 144720 srtict balanced no 5 major NT hands dealt (14.472%)
+There were 422712 times line1 - spades first - worked (42.2712%)
+There were 260554 times line2 - club finesse first - worked (26.055400000000002%)
+With a strict NT shape, line 1 - spades first - works (53.65%) while line 2 - club finesse first - works (39.26%)
+With a 6 minor ok but 5M not NT shape, line 1 - spades first - works (53.68%) while line 2 - club finesse first - works (40.97%)
+With a normal NT shape, line 1 - spades first - works (53.44%) while line 2 - club finesse first - works (45.43%)
