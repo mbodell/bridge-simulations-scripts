@@ -246,19 +246,19 @@ proc write_deal {} {
 	if {$C3 < 9} { incr count(setC3)}
 
 	# Calculate raw scores
-	set rST [score {3 notrump} nonvul $ST]
-	set rS9 [score {3 notrump} nonvul $S9]
-	set rS4 [score {3 notrump} nonvul $S4]
-	set rS2 [score {3 notrump} nonvul $S2]
-	set rH9 [score {3 notrump} nonvul $H9]
-	set rH8 [score {3 notrump} nonvul $H8]
-	set rH2 [score {3 notrump} nonvul $H2]
-	set rDK [score {3 notrump} nonvul $DK]
-	set rDT [score {3 notrump} nonvul $DT]
-	set rD4 [score {3 notrump} nonvul $D4]
-	set rCQ [score {3 notrump} nonvul $CQ]
-	set rCT [score {3 notrump} nonvul $CT]
-	set rC3 [score {3 notrump} nonvul $C3]
+	set rST [score {3 notrump} vul $ST]
+	set rS9 [score {3 notrump} vul $S9]
+	set rS4 [score {3 notrump} vul $S4]
+	set rS2 [score {3 notrump} vul $S2]
+	set rH9 [score {3 notrump} vul $H9]
+	set rH8 [score {3 notrump} vul $H8]
+	set rH2 [score {3 notrump} vul $H2]
+	set rDK [score {3 notrump} vul $DK]
+	set rDT [score {3 notrump} vul $DT]
+	set rD4 [score {3 notrump} vul $D4]
+	set rCQ [score {3 notrump} vul $CQ]
+	set rCT [score {3 notrump} vul $CT]
+	set rC3 [score {3 notrump} vul $C3]
 
 
 	# Calculate the IMP scores for each contract
