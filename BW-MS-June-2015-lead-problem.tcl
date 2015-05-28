@@ -324,6 +324,7 @@ main {
         reject if {!([spades east] >= 4)}
         reject if {[hearts east] >= 4}
         reject if {!([hcp west] >= 9)}
+        reject if {([hcp west] >= 15)}
         reject if {!([hearts west] == 4)}
         reject if {!([spades west] < 4)}
         reject if {[longest west] >= 6}
