@@ -206,19 +206,19 @@ proc write_deal {} {
 	set count(C3) [expr $count(C3) + $C3]
 
 	# Remember the set contract by lead
-	if {$ST < 9} { incr count(setST)}
-	if {$S4 < 9} { incr count(setS4)}
-	if {$HK < 9} { incr count(setHK)}
-	if {$H8 < 9} { incr count(setH8)}
-	if {$H3 < 9} { incr count(setH3)}
-	if {$DJ < 9} { incr count(setDJ)}
-	if {$D4 < 9} { incr count(setD4)}
-	if {$D3 < 9} { incr count(setD3)}
-	if {$CA < 9} { incr count(setCA)}
-	if {$CT < 9} { incr count(setCT)}
-	if {$C8 < 9} { incr count(setC8)}
-	if {$C4 < 9} { incr count(setC4)}
-	if {$C3 < 9} { incr count(setC3)}
+	if {$ST < 10} { incr count(setST)}
+	if {$S4 < 10} { incr count(setS4)}
+	if {$HK < 10} { incr count(setHK)}
+	if {$H8 < 10} { incr count(setH8)}
+	if {$H3 < 10} { incr count(setH3)}
+	if {$DJ < 10} { incr count(setDJ)}
+	if {$D4 < 10} { incr count(setD4)}
+	if {$D3 < 10} { incr count(setD3)}
+	if {$CA < 10} { incr count(setCA)}
+	if {$CT < 10} { incr count(setCT)}
+	if {$C8 < 10} { incr count(setC8)}
+	if {$C4 < 10} { incr count(setC4)}
+	if {$C3 < 10} { incr count(setC3)}
 
 	# Calculate raw scores
 	set rST [score {4 spades} vul $ST]
@@ -319,16 +319,21 @@ main {
         # BWS bids 2H with both majors, I assume opponents do to in a BW contest with no other information on auction
         reject if {[hearts east] >= 4}
         # for now the below shows an "accept" of invite
-        reject if {[hcp east] < 16}
+        reject if {[hcp east] < 16 && [spades east] < 5}
         # these points show invites for west
-        reject if {!([hcp west] >= 8)}
-        reject if {[hcp west] == 8 && [is_box west]}
+        reject if {!([hcp west] >= 7)}
         reject if {([hcp west] >= 10)}
+        # only go through stayman with 7 then invite if you had both majors and 5+ spades
+        reject if {[hcp west] == 7 && [spades west] <= 4}
+        reject if {[hcp west] == 8 && [is_box west]}
         reject if {([spades west] < 4)}
-        reject if {[spades west] > 5}
-        reject if {[spades west] == 5 && [hearts west] != 4}
-        # 5 hearts is ok since by this point we have 4 spades if 5 hearts
-        reject if {([hearts west] > 5)}
+        reject if {[spades west] > 6}
+        # you can only stayman and invite in spades with 5+ spades if you have also 4 hearts
+        reject if {[spades west] > 4 && [hearts west] != 4}
+        # 5 hearts is ok since by this point we have 4+ spades if 5/6 hearts
+        reject if {([hearts west] > 6)}
+        # if both majors are 5+ then you don't stayman
+        reject if {[spades west] > 4 && [hearts west] > 4}
         reject if {![passover1ntstayman north]}
         accept
 }
