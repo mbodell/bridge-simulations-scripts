@@ -18,6 +18,12 @@ array set count {
  acceptSpBothFail 0
  acceptSpSpBetter 0
  acceptSpSpWorse 0
+ choiceOfSpBetter 0
+ choiceOfSpWorse 0
+ choiceOfBothMake 0
+ choiceOfSpMake 0
+ choiceOf3ntMake 0
+ choiceOfBothFail 0
 }
 
 sdev blast3nt
@@ -243,6 +249,29 @@ proc write_deal {} {
       }
     }
   }
+  if {[spades north] >= 4} {
+    if {$tr >= 9 && $trS >= 10} {
+      incr count(choiceOfBothMake)
+      if {$tr >= $trS} {
+        incr count(choiceOfSpWorse)
+      } else {
+        incr count(choiceOfSpBetter)
+      }
+    } elseif {$tr >= 9} {
+      incr count(choiceOf3ntMake)
+      incr count(choiceOfSpWorse)
+    } elseif {$trS >= 10} {
+      incr count(choiceOfSpMake)
+      incr count(choiceOfSpBetter)
+    } else {
+      incr count(choiceOfBothFail)
+      if {($tr + 1) > $trS} {
+        incr count(choiceOfSpWorse)
+      } elseif {($tr + 1) < $trS} {
+        incr count(choiceOfSpBetter)
+      }
+    }
+  }
 
 #  formatter::write_deal
 #  puts "There are $tr tricks in NT"
@@ -268,7 +297,7 @@ deal_finished {
   puts "Across all hands there were an average of [trickScount average] tricks available in spades"
   set blastA [blast3nt average]
   set blastM [expr $blastA * $count(hands)]
-  puts "The blasting games made $blastM games ([expr $blastA * 100]%)"
+  puts "The blasting games made [expr round($blastM)] games ([expr double(round($blastA * 10000))/100]%)"
   puts "==================================================="
   set acceptI [expr $count(hands) - $count(decline)]
   puts "We'd invite and end up in game $acceptI times ([expr double(round(double($acceptI)/$count(hands)*10000))/100]%)"
@@ -290,6 +319,11 @@ deal_finished {
     puts "When we accept Spades scores better $count(acceptSpSpBetter) times ([expr double(round(double($count(acceptSpSpBetter))/$count(acceptSp)*10000))/100]%), NT scores better $count(acceptSpSpWorse) times ([expr double(round(double($count(acceptSpSpWorse))/$count(acceptSp)*10000))/100]%) and they are the same $same times ([expr double(round(double($same)/$count(acceptSp)*10000))/100]%)"
     puts "when we accept Spades both games make $count(acceptSpBothMake) times ([expr double(round(double($count(acceptSpBothMake))/$count(acceptSp)*10000))/100]%), only the NT game makes $count(acceptSp3ntMake) times ([expr double(round(double($count(acceptSp3ntMake))/$count(acceptSp)*10000))/100]%), only spades make $count(acceptSpSpMake) times ([expr double(round(double($count(acceptSpSpMake))/$count(acceptSp)*10000))/100]%), and both are down $count(acceptSpBothFail) times ([expr double(round(double($count(acceptSpBothFail))/$count(acceptSp)*10000))/100]%)"
   }
+  puts "=================================================="
+  set sameS [expr $count(hands) - $count(choiceOfSpBetter) - $count(choiceOfSpWorse)]
+  puts "If we choice of game between 4 Spaces and 3nt and end up in spades"
+  puts "Spades scores better $count(choiceOfSpBetter) times ([expr double(round(double($count(choiceOfSpBetter))/$count(hands)*10000))/100]%), NT scores better $count(choiceOfSpWorse) times ([expr double(round(double($count(choiceOfSpWorse))/$count(hands)*10000))/100]%) and they are the same $sameS times ([expr double(round(double($sameS)/$count(hands)*10000))/100]%)"
+  puts "when we accept Spades both games make $count(choiceOfBothMake) times ([expr double(round(double($count(choiceOfBothMake))/$count(hands)*10000))/100]%), only the NT game makes $count(choiceOf3ntMake) times ([expr double(round(double($count(choiceOf3ntMake))/$count(hands)*10000))/100]%), only spades make $count(choiceOfSpMake) times ([expr double(round(double($count(choiceOfSpMake))/$count(hands)*10000))/100]%), and both are down $count(choiceOfBothFail) times ([expr double(round(double($count(choiceOfBothFail))/$count(hands)*10000))/100]%)"
 }
 
 main {
