@@ -1,0 +1,12 @@
+We attempted 42417969 shuffles and played 10000 total hands
+==================================================
+Across all hands there were an average of 8.7636 tricks available in nt
+Across all hands there were an average of 9.8062 tricks available in spades
+==================================================
+If we choice of game between 4 Spaces and 3nt:
+Spades scores better 4947 times (49.47%), NT scores better 3603 times (36.03%) and they are the same 1450 times (14.5%)
+So in MP of even split S scores 56.72% and NT scores 43.28%
+==================================================
+In terms of games: both games make 4450 times (44.5%), only the NT game makes 896 times (8.96%), only spades make 1536 times (15.36%), and both are down 3118 times (31.18%)
+So being in spades scored 1.1505 imps better when NV
+So being in spades scored 1.4143 imps better when V
