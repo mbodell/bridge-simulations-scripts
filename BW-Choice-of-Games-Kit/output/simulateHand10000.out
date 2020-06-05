@@ -1,0 +1,12 @@
+We attempted 3213043 shuffles and played 10000 total hands
+==================================================
+Across all hands there were an average of 9.1189 tricks available in nt
+Across all hands there were an average of 9.7531 tricks available in hearts
+==================================================
+If we choice of game between 4 Hearts and 3nt:
+Hearts scores better 4331 times (43.31%), NT scores better 4042 times (40.42%) and they are the same 1627 times (16.27%)
+So in MP of even split H scores 51.45% and NT scores 48.56%
+==================================================
+In terms of games: both games make 5591 times (55.91%), only the NT game makes 1637 times (16.37%), only hearts make 410 times (4.1%), and both are down 2362 times (23.62%)
+So being in hearts scored -0.9256 imps better when NV
+So being in hearts scored -1.209 imps better when V
