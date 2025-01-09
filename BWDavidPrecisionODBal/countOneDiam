@@ -6,6 +6,34 @@ array set count {
  hands 0
  small 0
  big 0
+ h11 0
+ h12 0
+ h13 0
+ h14 0
+ h15 0
+ bal 0
+ unbal 0
+ oM 0
+ tC 0
+ tD 0
+ oN 0
+ sfftt 0 
+ sfttt 0
+ sffto 0
+ sffttb 0
+ sbox 0
+ ssttt 0
+ ssfto 0
+ sstto 0
+ sffto 0
+ sfffo 0
+ ssttob 0
+ ssftz 0
+ sfffz 0
+ sfftz 0
+ sep 0
+ sose 0
+ sosi 0
 }
 
 patternclass longest { return $l1 }
@@ -16,31 +44,360 @@ patterncond has_shortness { $l4 < 2 }
 patterncond is_box { $l4 == 3 }
 shapecond NT2dshape { $s <= 3 && $s >= 2 && $h <= 3 && $h >= 2 && $d <= 5 && $d >= 2 && $c <= 5 && $c >= 2}
 
+patterncond isfofothtw { $l1 == 4 && $l2 == 4 && $l3 == 3 && $l4 == 2 }
+patterncond isfiththtw { $l1 == 5 && $l2 == 3 && $l3 == 3 && $l4 == 2 }
+patterncond isfifothon { $l1 == 5 && $l2 == 4 && $l3 == 3 && $l4 == 1 }
+patterncond isfifotwtw { $l1 == 5 && $l2 == 4 && $l3 == 2 && $l4 == 2 }
+patterncond issithtwtw { $l1 == 6 && $l2 == 3 && $l3 == 2 && $l4 == 2 }
+patterncond issifotwon { $l1 == 6 && $l2 == 4 && $l3 == 2 && $l4 == 1 }
+patterncond issiththon { $l1 == 6 && $l2 == 3 && $l3 == 3 && $l4 == 1 }
+patterncond isfifitwon { $l1 == 5 && $l2 == 5 && $l3 == 2 && $l4 == 1 }
+patterncond isfofofoon { $l1 == 4 && $l2 == 4 && $l3 == 4 && $l4 == 1 }
+patterncond issethtwon { $l1 == 7 && $l2 == 3 && $l3 == 2 && $l4 == 1 }
+patterncond issifothze { $l1 == 6 && $l2 == 4 && $l3 == 3 && $l4 == 0 }
+patterncond isfifofoze { $l1 == 5 && $l2 == 4 && $l3 == 4 && $l4 == 0 }
+patterncond isfifithze { $l1 == 5 && $l2 == 5 && $l3 == 3 && $l4 == 0 }
+patterncond islong { $l1 > 7 }
+patterncond isose { $l1 == 7 }
+patterncond isosi { $l1 == 6 }
+
 proc write_deal {} {
 
   global count
+	incr count(hands)
 
-  formatter::write_deal
+	#puts "=========================================="
+  #formatter::write_deal
 }
 
 
 deal_finished {
   global count
-  puts "We dealt $count(deals) hands to find the result of these $count(hands) 11-15 hcp hands"
-	puts "There were $count(small) hands lower than 11"
-	puts "There were $count(big) hands higher than 15"
+  puts "We dealt $count(deals) hands to find the result of these $count(hands) 11-15 hcp 1D hands"
+	puts "We also found $count(oN) hands that were 1NT (14-15) and $count(oM) hands that were 1Major, $count(tC) hands that were 2C and $count(tD) hands that were 2D openers from 11-15 range"
+	puts "====================================="
+	puts "There were $count(bal) balanced hands in the $count(hands) 1D openings ([expr double($count(bal))/$count(hands)*100]%)"
+	puts "There were $count(unbal) unbalanced hands in the $count(hands) 1D openings ([expr double($count(unbal))/$count(hands)*100]%)"
+	if {double($count(bal))/($count(bal)+$count(unbal))<0.6} {
+		puts "David wins the bet!!!"
+	} else {
+		puts "David loses the bet!!!"
+	}
+	puts "======================================"
+	puts "1D 4432 hands were $count(sfftt) ([expr double($count(sfftt))/$count(hands)*100]%)"
+	puts "1D 5332 hands were $count(sfttt) ([expr double($count(sfttt))/$count(hands)*100]%)"
+	puts "1D 5431 hands were $count(sffto) ([expr double($count(sffto))/$count(hands)*100]%)"
+	puts "1D 5422 hands were $count(sffttb) ([expr double($count(sffttb))/$count(hands)*100]%)"
+	puts "1D 4333 hands were $count(sbox) ([expr double($count(sbox))/$count(hands)*100]%)"
+	puts "1D 6322 hands were $count(ssttt) ([expr double($count(ssttt))/$count(hands)*100]%)"
+	puts "1D 6421 hands were $count(ssfto) ([expr double($count(ssfto))/$count(hands)*100]%)"
+	puts "1D 6331 hands were $count(sstto) ([expr double($count(sstto))/$count(hands)*100]%)"
+	puts "1D 5521 hands were $count(sffto) ([expr double($count(sffto))/$count(hands)*100]%)"
+	puts "1D 4441 hands were $count(sfffo) ([expr double($count(sfffo))/$count(hands)*100]%)"
+	puts "1D 7321 hands were $count(ssttob) ([expr double($count(ssttob))/$count(hands)*100]%)"
+	puts "1D 6430 hands were $count(ssftz) ([expr double($count(ssftz))/$count(hands)*100]%)"
+	puts "1D 5440 hands were $count(sfffz) ([expr double($count(sfffz))/$count(hands)*100]%)"
+	puts "1D 5530 hands were $count(sfftz) ([expr double($count(sfftz))/$count(hands)*100]%)"
+	puts "1D 8+ hands were $count(sep) ([expr double($count(sep))/$count(hands)*100]%)"
+	puts "1D other 7+ hands were $count(sose) ([expr double($count(sose))/$count(hands)*100]%)"
+	puts "1D other 6+ hands were $count(sosi) ([expr double($count(sosi))/$count(hands)*100]%)"
+	puts "There were $count(small) hands lower than 11 ([expr double($count(small))/$count(deals)*100]%)"
+	puts "There were $count(h11) hands with 11 hcp ([expr double($count(h11))/$count(deals)*100]%)"
+	puts "There were $count(h12) hands with 12 hcp ([expr double($count(h12))/$count(deals)*100]%)"
+	puts "There were $count(h13) hands with 13 hcp ([expr double($count(h13))/$count(deals)*100]%)"
+	puts "There were $count(h14) hands with 14 hcp ([expr double($count(h14))/$count(deals)*100]%)"
+	puts "There were $count(h15) hands with 15 hcp ([expr double($count(h15))/$count(deals)*100]%)"
+	puts "There were $count(big) hands higher than 15 ([expr double($count(big))/$count(deals)*100]%)"
 }
 
 main {
   global count
   incr count(deals)
-	if {([hcp south]<11)} {
+	set h [hcp south]
+	if {($h<11)} {
 		incr count(small)
 		reject
 	}
-	if {([hcp south]>15)} {
+	if {($h>15)} {
 		incr count(big)
 		reject
 	}
+	if {$h==11} { incr count(h11) }
+	if {$h==12} { incr count(h12) }
+	if {$h==13} { incr count(h13) }
+	if {$h==14} { incr count(h14) }
+	if {$h==15} { incr count(h15) }
+
+	set sp [spades south]
+	set he [hearts south]
+	set di [diamonds south]
+	set cl [clubs south]
+
+	# 4432 hands
+	if {[isfofothtw south]} { 
+		if {$h < 14} {
+			incr count(sfftt) 
+			incr count(bal)
+			accept
+		} else {
+			incr count(oNt)
+			reject
+		}
+	}
+
+	# 5332 hands
+	if {[isfiththtw south]} { 
+		if {$h < 14} {
+			if {$he<5 && $sp<5} {
+				incr count(sfttt) 
+				incr count(bal)
+				accept
+			} else {
+				incr (oM)
+				reject
+			}
+		} else {
+			if {$he<5 && $sp<5} {
+				incr count(oN)
+				reject
+			} else {
+				incr (oM)
+				reject
+			}
+		}
+	}
+
+	# 5431 hands
+	if {[isfifothon south]} { 
+		if {($sp>4) || ($he>4)} {
+			incr count(oM)
+			reject
+		} elseif {$di == 1} {
+			incr count(tD)
+			reject
+		}
+		incr count(unbal)
+		incr count(sffto)
+		accept
+	}
+
+	# 5422 hands
+	if {[isfifotwtw south]} {
+		if {($sp>4) || ($he>4)} {
+			incr count(oM)
+			reject
+		} elseif {($h>13)} {
+			incr count(oN)
+			reject
+		}
+		incr count(bal)
+		incr count(sffttb)
+		accept
+	}
+
+	# 4333 hands
+	if {[is_box south]} {
+		if {$h >= 14} {
+			incr count(oN)
+			reject
+		} else {
+			incr count(sbox)
+			incr count(bal)
+			accept
+		}
+	}
+
+	# 6322 hands
+	if {[issithtwtw south]} {
+		if {$sp>5 || $he>5} {
+			incr count(oM)
+			reject
+		} elseif {$cl>5} {
+			incr count(tC)
+			reject
+		} else {
+			incr count(ssttt)
+			incr count(unbal)
+			accept
+		}
+	}
+ 
+	# 6421 hands
+	if {[issifotwon south]} {
+		if {$sp>5 || $he>5} {
+			incr count(oM)
+			reject
+		} elseif {$cl>5} {
+			incr count(tC)
+			reject
+		} else {
+			incr count(ssfto)
+			incr count(unbal)
+			accept
+		}
+	}
+
+	# 6331 hands
+	if {[issiththon south]} {
+		if {$sp>5 || $he>5} {
+			incr count(oM)
+			reject
+		} elseif {$cl>5} {
+			incr count(tC)
+			reject
+		} else {
+			incr count(sstto)
+			incr count(unbal)
+			accept
+		}
+	}
+
+	# 5521 hands
+	if {[isfifitwon south]} {
+		if {$sp>4||$he>4} {
+			incr count(oM)
+			reject
+		} else {
+			incr count(unbal)
+			incr count(sffto)
+			accept
+		}
+	}
+
+	# 4441 hands
+	if {[isfofofoon south]} {
+		if {$di==1} {
+			incr count(tD)
+			reject
+		} else {
+			incr count(unbal)
+			incr count(sfffo)
+			accept
+		}
+	}
+
+	# 7321 hands
+	if {[issethtwon south]} {
+		if {$sp>5 || $he>5} {
+			incr count(oM)
+			reject
+		} elseif {$cl>5} {
+			incr count(tC)
+			reject
+		} else {
+			incr count(ssttob)
+			incr count(unbal)
+			accept
+		}
+	}
+
+	# 6430 hands
+	if {[issifothze south]} {
+		if {$sp>5 || $he>5} {
+			incr count(oM)
+			reject
+		} elseif {$cl>5} {
+			incr count(tC)
+			reject
+		} else {
+			incr count(ssftz)
+			incr count(unbal)
+			accept
+		}
+	}
+
+	# 5440 hands
+	if {[isfifofoze south]} {
+		if {$sp>=5 || $he>=5} {
+			incr count(oM)
+			reject
+		} elseif {$di == 0} {
+			incr count(tD)
+			reject
+		} else {
+			incr count(sfffz)
+			incr count(unbal)
+			accept
+		}
+	}
+
+	# 5530 hands
+	if {[isfifithze south]} {
+		if {$sp>4||$he>4} {
+			incr count(oM)
+			reject
+		} else {
+			incr count(unbal)
+			incr count(sfftz)
+			accept
+		}
+	}
+
+	# 8+ card hands
+	if {[islong south]} {
+		if {$sp>5||$he>5} {
+			incr count(oM)
+			reject
+		} elseif {$cl>5} {
+			incr count(tC)
+			reject
+		} else {
+			incr count(unbal)
+			incr count(sep)
+			accept
+		}
+	}
+
+	# other 7 card hands
+	if {[isose south]} {
+		if {$sp>5||$he>5} {
+			incr count(oM)
+			reject
+		} elseif {$cl>5} {
+			incr count(tC)
+			reject
+		} else {
+			incr count(unbal)
+			incr count(sose)
+			accept
+		}
+	}
+
+	# other 6 card hands
+	if {[isosi south]} {
+		if {$sp>5||$he>5} {
+			incr count(oM)
+			reject
+		} elseif {$cl>5} {
+			incr count(tC)
+			reject
+		} else {
+			incr count(unbal)
+			incr count(sosi)
+			accept
+		}
+	}
+
+
+
+
+	## Just to catch any missed
+	if {$sp > 4 && $sp >= $di} {
+		incr count(oM)
+		puts "Missed the hand [south]"
+		reject
+	}
+	if {$he > 4 && $he >= $di} {
+		incr count(oM)
+		puts "Missed the hand [south]"
+		reject
+	}
+	if {$cl > 5 && $cl > $di} {
+		incr count(tC)
+		puts "Missed the hand [south]"
+		reject
+	}
+
+	puts "Missed the good hand [south]"
 	accept
 }
