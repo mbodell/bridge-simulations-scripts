@@ -1,0 +1,46 @@
+source lib/score.tcl
+
+
+array set count {
+ deals 0
+ hands 0
+ small 0
+ big 0
+}
+
+patternclass longest { return $l1 }
+patternclass longest2 { return $l1 + $l2 }
+holdingProc aceandtens {a k q j t} { return [expr {$a + $t}] }
+holdingProc aceandtenandnine {a k q j t x9} { return [expr {$a + $t + $x9}] }
+patterncond has_shortness { $l4 < 2 }
+patterncond is_box { $l4 == 3 }
+shapecond NT2dshape { $s <= 3 && $s >= 2 && $h <= 3 && $h >= 2 && $d <= 5 && $d >= 2 && $c <= 5 && $c >= 2}
+
+proc write_deal {} {
+
+  global count
+
+  formatter::write_deal
+}
+
+
+deal_finished {
+  global count
+  puts "We dealt $count(deals) hands to find the result of these $count(hands) 11-15 hcp hands"
+	puts "There were $count(small) hands lower than 11"
+	puts "There were $count(big) hands higher than 15"
+}
+
+main {
+  global count
+  incr count(deals)
+	if {([hcp south]<11)} {
+		incr count(small)
+		reject
+	}
+	if {([hcp south]>15)} {
+		incr count(big)
+		reject
+	}
+	accept
+}
